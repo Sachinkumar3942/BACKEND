@@ -14,18 +14,23 @@ app.use(express.json());
   
 // })
 app.post("/", async (req, resp) => {
-  let User = new user(req.body);
-  User = await User.save();
-  User = User.toObject();
-  delete User.password;
-  Jwt.sign({User},jwtKey,{expiresIn: '5h'},(err,token)=>{
-    if(err){
-      resp.json({ result: "Something went wrong, try again" });
-    }
-    else{
-      resp.json({User,auth:token});
-    }
-  })
+    try{
+        let User = new user(req.body);
+        User = await User.save();
+        User = User.toObject();
+        delete User.password;
+        Jwt.sign({User},jwtKey,{expiresIn: '5h'},(err,token)=>{
+            if(err){
+                resp.json({ result: "Something went wrong, try again" });
+            }
+            else{
+                resp.json({User,auth:token});
+            }
+        })
+    } catch (error) {
+        console.log("Error login "); 
+        resp.status(500).send({message : "Error sending User"}) ; 
+    } 
   
 });
 
@@ -42,7 +47,8 @@ app.post("/add-product",verifyToken, async (req, resp) => {
 });
 
 app.post("/login",async (req, resp) => {
-  if (req.body.password && req.body.email) {
+  try{
+    if (req.body.password && req.body.email) {
     let User = await user.findOne(req.body).select("password").select("name");
     if (User) {
       Jwt.sign({User},jwtKey,{expiresIn: '5h' },(err,token)=>{
@@ -57,6 +63,12 @@ app.post("/login",async (req, resp) => {
       resp.send({ result: "No User Found" });
     }
   } else resp.send({ result: "Enter email and password " });
+  }catch  (error)
+  {
+   console.log("Failed to login ") ;  
+   resp.status(404).send({message : "No User found " })
+  }
+    
 });
 
 app.get("/product-list",verifyToken, async (req, resp) => {
