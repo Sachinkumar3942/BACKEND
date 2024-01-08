@@ -20,10 +20,10 @@ app.post("/", async (req, resp) => {
   delete User.password;
   Jwt.sign({User},jwtKey,{expiresIn: '5h'},(err,token)=>{
     if(err){
-      resp.send({ result: "Something went wrong, try again" });
+      resp.json({ result: "Something went wrong, try again" });
     }
     else{
-      resp.send({User,auth:token});
+      resp.json({User,auth:token});
     }
   })
   
