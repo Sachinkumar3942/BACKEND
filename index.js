@@ -34,7 +34,7 @@ app.post("/", async (req, resp) => {
                 json({ result: "Something went wrong, try again" });
             }
             else{
-                resp. header('Access-Control-Allow-Origin','https://main--monumental-lokum-1725ab.netlify.app/').
+                resp.header('Access-Control-Allow-Origin','https://main--monumental-lokum-1725ab.netlify.app/').
                 json({User,auth:token});
             }
         })
