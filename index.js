@@ -41,7 +41,7 @@ app.post("/", async (req, resp) => {
     } catch (error) {
         console.log("Error login "); 
         resp.status(500).
-        header('Access-Control-Allow-Origin','https://main--monumental-lokum-1725ab.netlify.app/').
+        header('Access-Control-Allow-Origin','*').
         send({message : "Error sending User"}) ; 
     } 
   
@@ -51,7 +51,8 @@ app.post("/add-product",verifyToken, async (req, resp) => {
   try {
     let User = new product(req.body);
     User = await User.save();
-    resp.send(User);
+    resp.
+    header('Access-Control-Allow-Origin','*').send(User);
   } catch (error) {
     console.log("Error adding product "); 
     resp.status(500).send({message : "Error sending User"}) ; 
@@ -66,10 +67,12 @@ app.post("/login",async (req, resp) => {
     if (User) {
       Jwt.sign({User},jwtKey,{expiresIn: '5h' },(err,token)=>{
         if(err){
-          resp.send({ result: "No User Found" });
+          resp.
+          header('Access-Control-Allow-Origin','*').send({ result: "No User Found" });
         }
         else{
-          resp.send({User,auth: token});
+          resp.
+          header('Access-Control-Allow-Origin','*').send({User,auth: token});
         }        
       })
     } else {
@@ -79,7 +82,8 @@ app.post("/login",async (req, resp) => {
   }catch  (error)
   {
    console.log("Failed to login ") ;  
-   resp.status(404).send({message : "No User found " })
+   resp.status(404).
+   header('Access-Control-Allow-Origin','*').send({message : "No User found " })
   }
 });
 
@@ -87,9 +91,11 @@ app.get("/product-list",verifyToken, async (req, resp) => {
   try{
     let User = await product.find();
     if (User.length > 0) {
-      resp.send(User);
+      resp.
+      header('Access-Control-Allow-Origin','*').send(User);
     } else {
-      resp.send("Product not available");
+      resp.
+      header('Access-Control-Allow-Origin','*').send("Product not available");
     }
   }
   catch  (error)
@@ -104,12 +110,14 @@ app.delete("/product/:id",verifyToken, async (req, resp) => {
   try 
   {
     let User = await product.deleteOne({ _id: req.params.id });
-    resp.send(User);
+    resp.
+    header('Access-Control-Allow-Origin','*').send(User);
   }
   catch (error)
   {
    console.log("Failed to delete User ") ;  
-   resp.status(404).send({message : "No User found " })
+   resp.status(404).
+   header('Access-Control-Allow-Origin','*').send({message : "No User found " })
   }
 
 });
@@ -127,7 +135,8 @@ app.get("/product/:id",verifyToken, async (req, resp) => {
   catch (error)
   {
    console.log("Failed to get product ") ;  
-   resp.status(404).send({message : "No User found " })
+   resp.status(404).
+        header('Access-Control-Allow-Origin','*').send({message : "No User found " })
   }
 
 });
@@ -138,12 +147,14 @@ app.put("/product/:id",verifyToken, async (req, resp) => {
       { _id: req.params.id },
       { $set: req.body }
     );
-    resp.send(User);
+    resp.
+        header('Access-Control-Allow-Origin','*').send(User);
   }
   catch (error)
   {
     console.log("Failed to update User ") ;
-    resp.status(404).send({message : "No User found " })
+    resp.status(404).
+        header('Access-Control-Allow-Origin','*').send({message : "No User found " })
   }
  
 });
@@ -158,12 +169,14 @@ app.get("/search/:key",verifyToken, async (req, resp) => {
         { category: { $regex: req.params.key } },
       ],
     });
-    resp.send(User);
+    resp.
+        header('Access-Control-Allow-Origin','*').send(User);
   }
   catch (error)
   {
    console.log("Failed to search User ") ; 
-   resp.status(404).send({message : "No User found " })
+   resp.status(404).
+        header('Access-Control-Allow-Origin','*').send({message : "No User found " })
   }
 
 });
@@ -175,7 +188,8 @@ function verifyToken(req,resp,next){
     token=token.split(' ')[1];
     Jwt.verify(token,jwtKey,(err,valid)=>{
       if(err){
-        resp.status(401).send("Please enter a valid token.");
+        resp.status(401).
+        header('Access-Control-Allow-Origin','*').send("Please enter a valid token.");
       }
       else{
         next();
