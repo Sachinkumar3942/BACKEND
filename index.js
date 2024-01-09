@@ -30,11 +30,11 @@ app.post("/", async (req, resp) => {
         Jwt.sign({User},jwtKey,{expiresIn: '5h'},(err,token)=>{
             if(err){
                 resp.
-                header('Access-Control-Allow-Origin','https://main--monumental-lokum-1725ab.netlify.app/').
+                header('Access-Control-Allow-Origin','*').
                 json({ result: "Something went wrong, try again" });
             }
             else{
-                resp.header('Access-Control-Allow-Origin','https://main--monumental-lokum-1725ab.netlify.app/').
+                resp.header('Access-Control-Allow-Origin','*').
                 json({User,auth:token});
             }
         })
