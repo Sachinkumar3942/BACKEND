@@ -25,15 +25,20 @@ app.post("/", async (req, resp) => {
         delete User.password;
         Jwt.sign({User},jwtKey,{expiresIn: '5h'},(err,token)=>{
             if(err){
-                resp.json({ result: "Something went wrong, try again" });
+                resp.
+                header('Access-Control-Allow-Origin','https://main--monumental-lokum-1725ab.netlify.app/').
+                json({ result: "Something went wrong, try again" });
             }
             else{
-                resp.json({User,auth:token});
+                resp. header('Access-Control-Allow-Origin','https://main--monumental-lokum-1725ab.netlify.app/').
+                json({User,auth:token});
             }
         })
     } catch (error) {
         console.log("Error login "); 
-        resp.status(500).send({message : "Error sending User"}) ; 
+        resp.status(500).
+        header('Access-Control-Allow-Origin','https://main--monumental-lokum-1725ab.netlify.app/').
+        send({message : "Error sending User"}) ; 
     } 
   
 });
