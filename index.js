@@ -7,7 +7,10 @@ const Jwt = require("jsonwebtoken");
 const jwtKey = "e-comm";
 const app = express();
 
-app.use(cors({origin:'https://main--monumental-lokum-1725ab.netlify.app/'}));
+app.use(cors({origin:'https://main--monumental-lokum-1725ab.netlify.app/' ,
+ methods: "GET,HEAD,PUT,PATCH,POST,DELETE", 
+preflightContinue: false , 
+optionsSuccessStatus: 204}));
 app.use(express.json());
 
 app.get("/", async(req,res)=> {
@@ -69,7 +72,6 @@ app.post("/login",async (req, resp) => {
    console.log("Failed to login ") ;  
    resp.status(404).send({message : "No User found " })
   }
-    
 });
 
 app.get("/product-list",verifyToken, async (req, resp) => {
