@@ -10,9 +10,10 @@ const app = express();
 app.use(cors({origin:'https://main--monumental-lokum-1725ab.netlify.app/'}));
 app.use(express.json());
 
-// app.get("/", async(req,res)=> {
-  
-// })
+app.get("/", async(req,res)=> {
+  res.send("Hello World ");
+})
+
 app.post("/", async (req, resp) => {
   let User = new user(req.body);
   User = await User.save();
