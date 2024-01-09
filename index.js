@@ -7,7 +7,7 @@ const Jwt = require("jsonwebtoken");
 const jwtKey = "e-comm";
 const app = express();
 
-app.use(cors({origin:'https://main--monumental-lokum-1725ab.netlify.app/' ,
+app.use(cors({origin:'*' ,
  methods: "GET,HEAD,PUT,PATCH,POST,DELETE", 
 preflightContinue: false , 
 optionsSuccessStatus: 204}));
